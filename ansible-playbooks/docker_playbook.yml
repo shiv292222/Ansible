@@ -1,0 +1,20 @@
+- name: Install Docker
+  hosts: servers
+  become: yes
+  tasks:
+    - name: Update apt cache (Debian/Ubuntu)
+      apt:
+        update_cache: yes
+      when: ansible_distribution in ["Debian", "Ubuntu"]
+
+    - name: Install Docker on Debian/Ubuntu
+      apt:
+        name: docker.io
+        state: latest
+      when: ansible_distribution in ["Debian", "Ubuntu"]
+
+    - name: Install Docker on Redhat/Amazon
+      dnf:
+        name: docker
+        state: latest
+      when: ansible_distribution in ["Amazon", "Redhat"]
